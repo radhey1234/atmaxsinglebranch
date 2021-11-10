@@ -7,14 +7,14 @@ pipeline {
             steps {
                 sh '''
                     echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
+                    echo "GRADLE_HOME = ${GRADLE_HOME}"
                 '''
             }
         }
 
         stage ('Build') {
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+                sh 'gradle' 
             }
         }
     }
