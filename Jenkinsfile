@@ -9,6 +9,7 @@ pipeline {
                     echo "PATH = ${PATH}"
                     echo "GRADLE_HOME = ${GRADLE_HOME}"
                     whoami
+                    gradle
                 '''
             }
         }
