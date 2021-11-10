@@ -1,4 +1,4 @@
-
+            
 pipeline {
     agent any
     
@@ -7,59 +7,16 @@ pipeline {
             steps {
                 sh '''
                     echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                    whoami
+                    echo "GRADLE_HOME = ${GRADLE_HOME}"
                 '''
             }
         }
 
         stage ('Build') {
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install' 
-          
+                sh 'gradle' 
             }
-     
-     
         }
-        stage ('copy') {
-            steps {
-                echo "radhe radhey"
-               sh 'scp -o StrictHostKeyChecking=no -i singapurkey.pem radhey ec2-user@3.1.201.220:/home/ec2-user/'
-                    }
-        }
-    
-        stage ('deploy'){
-        steps {
-            
-           sh 'scp -o StrictHostKeyChecking=no -i singapurkey.pem target/iExpress-0.0.1-SNAPSHOT.war  ec2-user@3.1.201.220:/opt/apache-tomcat-8.5.72/webapps/'
-            sh """
-            ssh -i singapurkey.pem ec2-user@3.1.201.220
-            
-            """
-        }
-    
-}
-         stage('Build Image') {
-             steps {
-                 script {    
-                      sh 'sudo -Hu ec2-user ls'
-                      sh 'sudo -Hu ec2-user ssh jenkins@3.1.201.220 ls'
-                      sh 'sudo -Hu ec2-user ssh jenkins@3.1.201.220 rm -rf /home/jenkins/test'
-                      sh 'sudo -Hu ec2-user ssh jenkins@3.1.201.220 ls'
-                      sh "echo pwd"
-                    }
-                 }
-             }
-    
-        stage('copy jenkins'){
-        steps {
-            sh """
-            sudo -Hu ec2-user ssh jenkins@3.1.201.220 /opt/apache-tomcat-8.5.72/shutdowntomcat
-            
-"""
-        }
-        }
-}
-
+    }
 }
 
